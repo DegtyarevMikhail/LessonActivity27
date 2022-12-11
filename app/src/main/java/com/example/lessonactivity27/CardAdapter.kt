@@ -8,15 +8,20 @@ import com.example.lessonactivity27.databinding.CardItemBinding
 
 
 
-class CardAdapter : RecyclerView.Adapter<CardAdapter.CardHolder>() {
+class CardAdapter(val listener: Listener) : RecyclerView.Adapter<CardAdapter.CardHolder>() {
     val cardList = ArrayList<Card>()
 
 
     class CardHolder(item: View): RecyclerView.ViewHolder(item) {
         val binding = CardItemBinding.bind(item)
-        fun bind(card: Card) = with(binding){
+
+
+        fun bind(card: Card, listener: Listener) = with(binding){
             im.setImageResource(card.imageId)
             tvTitle.text = card.title
+            itemView.setOnClickListener{
+                listener.onClick(card)
+            }
         }
     }
 
@@ -26,7 +31,7 @@ class CardAdapter : RecyclerView.Adapter<CardAdapter.CardHolder>() {
     }
 
     override fun onBindViewHolder(holder: CardHolder, position: Int) {
-        holder.bind(cardList[position])
+        holder.bind(cardList[position], listener)
     }
 
     override fun getItemCount(): Int {
@@ -36,6 +41,9 @@ class CardAdapter : RecyclerView.Adapter<CardAdapter.CardHolder>() {
     fun addCard(card: Card){
         cardList.add(card)
         notifyDataSetChanged()
+    }
+    interface Listener{
+        fun onClick(card:Card)
     }
 
  /*   fun addAll(list: List<Card>){

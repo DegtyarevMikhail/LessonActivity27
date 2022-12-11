@@ -3,16 +3,16 @@ package com.example.lessonactivity27
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.lessonactivity27.databinding.ActivityMainBinding
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CardAdapter.Listener {
     lateinit var binding: ActivityMainBinding
-
-    private val adapter = CardAdapter()
+    private val adapter = CardAdapter(this)
     private var editLauncher: ActivityResultLauncher<Intent>? = null
 
 
@@ -37,5 +37,9 @@ class MainActivity : AppCompatActivity() {
                 editLauncher?.launch(Intent(this@MainActivity, EditActivity::class.java))
             }
         }
+    }
+
+    override fun onClick(card: Card) {
+        Toast.makeText(this,"Toast : ${card.title}",Toast.LENGTH_SHORT).show()
     }
 }
